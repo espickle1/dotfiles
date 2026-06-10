@@ -49,7 +49,16 @@ To go from a loop to 100 parallel containers, change how the function is called
 (`.map()` instead of a for-loop), not the function itself. The processing logic
 should not know or care that it's running in parallel.
 
-**8. Preserve a local development path.**
+**8. Ephemeral by default: `modal run`, not `modal deploy`.**
+This is a notebook-driven research workflow, not a service. Use `modal run` (or
+`.remote()` from an ephemeral app context) so that everything spins down when
+the work finishes. Reserve `modal deploy` for cases where a persistent app is
+genuinely required — a web endpoint, a scheduled job, a queue consumer — and
+flag it explicitly before doing so, since deployed apps stay live, can be
+triggered without anyone at the keyboard, and accrue costs silently. If you're
+unsure whether deployment is necessary, it isn't.
+
+**9. Preserve a local development path.**
 Structure every change so that business logic can be exercised locally — on
 smaller data, on CPU, with mocked inputs. Modal is the production execution
 path, not the development inner loop. If the only way to test a change is
